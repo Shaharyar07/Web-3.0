@@ -48,6 +48,17 @@ export const TransactionProvider = ({ children }) => {
     }
   };
 
+  const checkIfTransactionExists = async () => {
+    try {
+      const transactionContract = getEthereumContract();
+      const transactionCount = await transactionContract.getTransactionCount();
+      window.localStorage.setItem("transactionCount", transactionCount);
+    } catch (error) {
+      console.log(error);
+      throw new error("No ethers object found");
+    }
+  };
+
   const sendTransaction = async () => {
     try {
       if (!ethereum) return alert("please install metamask");
@@ -99,6 +110,7 @@ export const TransactionProvider = ({ children }) => {
   };
   useEffect(() => {
     checkIfAccountIsConnected();
+    checkIfTransactionExists();
   }, []);
 
   return (
