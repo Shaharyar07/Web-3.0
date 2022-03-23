@@ -26,26 +26,13 @@ export const TransactionProvider = ({ children }) => {
     keyword: "",
     message: "",
   });
-
+  const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [transactionCount, setTransactionCount] = useState(
     localStorage.getItem("transactionCount")
   );
   const handleChange = (e, name) => {
     setFormData({ ...formData, [name]: e.target.value });
-  };
-
-  const checkIfAccountIsConnected = async () => {
-    try {
-      if (!ethereum) return alert("please install metamask");
-      const accounts = await ethereum.request({ method: "eth_accounts" });
-      if (accounts && accounts.length > 0) {
-        setCurrentAccount(accounts[0]);
-      }
-    } catch (error) {
-      console.log(error);
-      throw new error("No ethers wallet found");
-    }
   };
 
   const checkIfTransactionExists = async () => {
@@ -57,6 +44,29 @@ export const TransactionProvider = ({ children }) => {
       console.log(error);
       throw new error("No ethers object found");
     }
+  };
+  const getAllTransactions = async () => {
+    try {
+      if (!ethereum) return alert("please install metamask");
+      const transactionContract = getEthereumContract();
+      const availableTransactions =
+        await transactionContract.getAllTransactions();
+      const structuredTransactions = availableTransactions.map(
+        (transaction) => ({
+          addressTo: transaction.receiver,
+          addressFrom: transaction.sender,
+          timestamp: new Date(
+            transaction.timestamp.toNumber() * 1000
+          ).toLocaleString(),
+          message: transaction.message,
+          keyword: transaction.keyword,
+          amount: parseInt(transaction.amount._hex) / 10 ** 18,
+        })
+      );
+
+      console.log(structuredTransactions);
+      setTransactions(structuredTransactions);
+    } catch (error) {}
   };
 
   const sendTransaction = async () => {
@@ -95,6 +105,19 @@ export const TransactionProvider = ({ children }) => {
       throw new error("No ethers object found");
     }
   };
+  const checkIfAccountIsConnected = async () => {
+    try {
+      if (!ethereum) return alert("please install metamask");
+      const accounts = await ethereum.request({ method: "eth_accounts" });
+      if (accounts && accounts.length > 0) {
+        setCurrentAccount(accounts[0]);
+        getAllTransactions();
+      }
+    } catch (error) {
+      console.log(error);
+      throw new error("No ethers wallet found");
+    }
+  };
 
   const connectWallet = async () => {
     try {
@@ -121,6 +144,8 @@ export const TransactionProvider = ({ children }) => {
         formData,
         sendTransaction,
         handleChange,
+        loading,
+        transactions,
       }}
     >
       {children}
