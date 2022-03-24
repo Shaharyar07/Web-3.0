@@ -25,7 +25,6 @@ const Navbar = () => {
         <Link to="/transactions">
           <NavBarItem title="Transactions" />
         </Link>
-       
       </ul>
       <div className="flex relative">
         {!toggleMenu && (
