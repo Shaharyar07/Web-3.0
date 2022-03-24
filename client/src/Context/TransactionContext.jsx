@@ -51,12 +51,13 @@ export const TransactionProvider = ({ children }) => {
       const transactionContract = getEthereumContract();
       const availableTransactions =
         await transactionContract.getAllTransactions();
+      console.log("Available: ", availableTransactions);
       const structuredTransactions = availableTransactions.map(
         (transaction) => ({
-          addressTo: transaction.receiver,
           addressFrom: transaction.sender,
+          addressTo: transaction.reciever,
           timestamp: new Date(
-            transaction.timestamp.toNumber() * 1000
+            transaction.timeStamp.toNumber() * 1000
           ).toLocaleString(),
           message: transaction.message,
           keyword: transaction.keyword,
@@ -64,9 +65,12 @@ export const TransactionProvider = ({ children }) => {
         })
       );
 
-      console.log(structuredTransactions);
+      console.log("Structured: ", structuredTransactions);
       setTransactions(structuredTransactions);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+      throw new error("No ethers object found");
+    }
   };
 
   const sendTransaction = async () => {
