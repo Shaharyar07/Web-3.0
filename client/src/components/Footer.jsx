@@ -16,9 +16,6 @@ const Footer = () => (
           Exchange
         </p>
         <p className="text-white text-base text-center mx-2 cursor-pointer">
-          Tutorials
-        </p>
-        <p className="text-white text-base text-center mx-2 cursor-pointer">
           Wallets
         </p>
       </div>
@@ -29,14 +26,14 @@ const Footer = () => (
         Come join us and hear for the unexpected miracle
       </p>
       <p className="text-white text-sm text-center font-medium mt-2">
-        info@kryptomastery.com
+        shaharyar.tariq248@gmail.com
       </p>
     </div>
 
     <div className="sm:w-[90%] w-full h-[0.25px] bg-gray-400 mt-5 " />
 
     <div className="sm:w-[90%] w-full flex justify-between items-center mt-3">
-      <p className="text-white text-left text-xs">@kryptomastery2022</p>
+      <p className="text-white text-left text-xs">@Sherry2022</p>
       <p className="text-white text-right text-xs">All rights reserved</p>
     </div>
   </div>
