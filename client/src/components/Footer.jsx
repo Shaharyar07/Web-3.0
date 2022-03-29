@@ -26,7 +26,7 @@ const Footer = () => (
         Come join us and hear for the unexpected miracle
       </p>
       <p className="text-white text-sm text-center font-medium mt-2">
-        shaharyar.tariq248@gmail.com
+        Shaharyar.tariq248@gmail.com
       </p>
     </div>
 
